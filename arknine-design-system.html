@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arknine Technologies — Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ARKNINE TECHNOLOGIES — DESIGN SYSTEM
+   Version 1.0 · April 2026
+   ============================================================ */
+
+/* --- CSS Custom Properties (Design Tokens) --- */
+:root {
+  /* Brand Colors */
+  --color-primary: #33355e;
+  --color-primary-hover: #4b4f85;
+  --color-primary-light: #6469a8;
+  --color-primary-pressed: #252747;
+  --color-primary-ghost: rgba(51, 53, 94, 0.06);
+  --color-primary-ghost-hover: rgba(51, 53, 94, 0.10);
+
+  --color-secondary: #df8b30;
+  --color-secondary-hover: #e89d4f;
+  --color-secondary-pressed: #c87a25;
+  --color-secondary-ghost: rgba(223, 139, 48, 0.08);
+
+  /* Greyscale */
+  --color-charcoal: #16161a;
+  --color-stone: #6a6a73;
+  --color-cool-grey: #9a9da8;
+  --color-mist: #e8e9ed;
+  --color-off-white: #f5f6f7;
+  --color-white: #fafafa;
+  --color-pure-white: #ffffff;
+
+  /* Semantic */
+  --color-success: #4c9a72;
+  --color-success-bg: rgba(76, 154, 114, 0.08);
+  --color-failure: #ac4343;
+  --color-failure-bg: rgba(172, 67, 67, 0.08);
+  --color-warning: #c68e36;
+  --color-warning-bg: rgba(198, 142, 54, 0.08);
+
+  /* Typography */
+  --font-heading: 'Prata', 'Georgia', serif;
+  --font-body: 'Avenir Next LT Pro', 'Avenir Next', 'Avenir', 'Segoe UI', sans-serif;
+
+  --text-h1: clamp(2.25rem, 3vw + 1rem, 3rem);
+  --text-h2: clamp(1.75rem, 2vw + 0.75rem, 2.25rem);
+  --text-h3: clamp(1.25rem, 1.5vw + 0.5rem, 1.5rem);
+  --text-body-lg: 1.125rem;
+  --text-body: 1rem;
+  --text-body-sm: 0.875rem;
+  --text-caption: 0.75rem;
+  --text-eyebrow: 0.6875rem;
+
+  /* Spacing Scale (4px base) */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* Radii */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(22,22,26,0.04);
+  --shadow-sm: 0 2px 8px rgba(22,22,26,0.06);
+  --shadow-md: 0 4px 16px rgba(22,22,26,0.08);
+  --shadow-lg: 0 8px 32px rgba(22,22,26,0.10);
+  --shadow-xl: 0 16px 48px rgba(22,22,26,0.12);
+  --shadow-inner: inset 0 1px 2px rgba(22,22,26,0.06);
+
+  /* Motion */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-enter: 600ms;
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  color: var(--color-charcoal);
+  background: var(--color-white);
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+
+/* --- Scroll Reveal System --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--duration-enter) var(--ease-out-expo),
+              transform var(--duration-enter) var(--ease-out-expo);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }
+.reveal-delay-4 { transition-delay: 320ms; }
+.reveal-delay-5 { transition-delay: 400ms; }
+
+/* --- Layout --- */
+.page-wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-10) var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .page-wrapper { padding: var(--space-16) var(--space-12); }
+}
+
+.section {
+  padding: var(--space-16) 0;
+  border-top: 1px solid var(--color-mist);
+}
+.section:first-of-type { border-top: none; padding-top: 0; }
+
+/* --- Typography Styles --- */
+h1, .h1 {
+  font-family: var(--font-heading);
+  font-size: var(--text-h1);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--color-charcoal);
+}
+h2, .h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-h2);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--color-charcoal);
+}
+h3, .h3 {
+  font-family: var(--font-heading);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--color-charcoal);
+}
+
+.body-lg { font-size: var(--text-body-lg); line-height: 1.65; }
+.body-sm { font-size: var(--text-body-sm); line-height: 1.55; }
+.caption { font-size: var(--text-caption); line-height: 1.5; letter-spacing: 0.02em; color: var(--color-stone); }
+.eyebrow {
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.text-stone { color: var(--color-stone); }
+.text-cool { color: var(--color-cool-grey); }
+
+/* --- Section Header --- */
+.section-header {
+  margin-bottom: var(--space-10);
+}
+.section-header .eyebrow {
+  margin-bottom: var(--space-3);
+  display: block;
+}
+.section-header h2 {
+  margin-bottom: var(--space-3);
+}
+.section-header p {
+  color: var(--color-stone);
+  max-width: 540px;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  padding: var(--space-20) 0 var(--space-16);
+  position: relative;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-4) var(--space-1) var(--space-3);
+  background: var(--color-primary-ghost);
+  border-radius: var(--radius-full);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: var(--space-8);
+}
+.hero-eyebrow .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  animation: pulse-dot 2.4s var(--ease-out-quart) infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  line-height: 1.05;
+  max-width: 14ch;
+  margin-bottom: var(--space-6);
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--color-primary);
+  position: relative;
+}
+.hero h1 em::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--color-secondary);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.8s var(--ease-out-expo);
+}
+.hero h1.visible em::after {
+  transform: scaleX(1);
+}
+
+.hero-description {
+  font-size: var(--text-body-lg);
+  color: var(--color-stone);
+  max-width: 48ch;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: all var(--duration-normal) var(--ease-out-quart);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.97); }
+
+/* Sizes */
+.btn-sm { padding: 0.5rem 1rem; font-size: var(--text-body-sm); border-radius: var(--radius-sm); }
+.btn-md { padding: 0.625rem 1.375rem; font-size: var(--text-body-sm); }
+.btn-lg { padding: 0.875rem 1.75rem; font-size: var(--text-body); border-radius: var(--radius-lg); }
+
+/* Primary */
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-pure-white);
+  box-shadow: 0 1px 3px rgba(51,53,94,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+  box-shadow: 0 4px 12px rgba(51,53,94,0.25), inset 0 1px 0 rgba(255,255,255,0.08);
+  transform: translateY(-1px);
+}
+.btn-primary:active {
+  background: var(--color-primary-pressed);
+  box-shadow: 0 1px 2px rgba(51,53,94,0.2);
+  transform: scale(0.97) translateY(0);
+}
+.btn-primary[disabled] {
+  background: var(--color-primary);
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Secondary (Amber) */
+.btn-secondary {
+  background: var(--color-secondary);
+  color: var(--color-pure-white);
+  box-shadow: 0 1px 3px rgba(223,139,48,0.2), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.btn-secondary:hover {
+  background: var(--color-secondary-hover);
+  box-shadow: 0 4px 12px rgba(223,139,48,0.25);
+  transform: translateY(-1px);
+}
+.btn-secondary:active {
+  background: var(--color-secondary-pressed);
+  transform: scale(0.97);
+}
+.btn-secondary[disabled] { opacity: 0.38; cursor: not-allowed; pointer-events: none; }
+
+/* Outline */
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary);
+  box-shadow: inset 0 0 0 1.5px var(--color-primary);
+}
+.btn-outline:hover {
+  background: var(--color-primary-ghost);
+  box-shadow: inset 0 0 0 1.5px var(--color-primary-hover);
+  color: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+.btn-outline:active { background: var(--color-primary-ghost-hover); transform: scale(0.97); }
+.btn-outline[disabled] { opacity: 0.38; cursor: not-allowed; pointer-events: none; }
+
+/* Ghost */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-primary);
+}
+.btn-ghost:hover {
+  background: var(--color-primary-ghost);
+}
+.btn-ghost:active { background: var(--color-primary-ghost-hover); transform: scale(0.97); }
+
+/* Destructive */
+.btn-destructive {
+  background: var(--color-failure);
+  color: var(--color-pure-white);
+  box-shadow: 0 1px 3px rgba(172,67,67,0.2);
+}
+.btn-destructive:hover {
+  background: #bf4b4b;
+  box-shadow: 0 4px 12px rgba(172,67,67,0.25);
+  transform: translateY(-1px);
+}
+.btn-destructive:active { background: #993939; transform: scale(0.97); }
+.btn-destructive[disabled] { opacity: 0.38; cursor: not-allowed; pointer-events: none; }
+
+/* Icon button */
+.btn-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: var(--radius-md);
+}
+.btn-icon.btn-sm { width: 2rem; height: 2rem; }
+.btn-icon.btn-lg { width: 3rem; height: 3rem; }
+
+.btn svg {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  transition: transform var(--duration-normal) var(--ease-out-quart);
+}
+.btn:hover svg { transform: translateX(2px); }
+
+/* Button Group */
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+/* ============================================================
+   INPUTS & FORMS
+   ============================================================ */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.form-label {
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  color: var(--color-charcoal);
+}
+.form-hint {
+  font-size: var(--text-caption);
+  color: var(--color-cool-grey);
+}
+
+.input {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid var(--color-mist);
+  border-radius: var(--radius-md);
+  background: var(--color-pure-white);
+  color: var(--color-charcoal);
+  outline: none;
+  transition: border-color var(--duration-normal) var(--ease-out-quart),
+              box-shadow var(--duration-normal) var(--ease-out-quart);
+  width: 100%;
+}
+.input::placeholder { color: var(--color-cool-grey); }
+.input:hover { border-color: var(--color-cool-grey); }
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(51, 53, 94, 0.08);
+}
+.input-error { border-color: var(--color-failure); }
+.input-error:focus { box-shadow: 0 0 0 3px rgba(172, 67, 67, 0.08); }
+.input-success { border-color: var(--color-success); }
+
+.input-lg { padding: 0.875rem 1rem; font-size: var(--text-body-lg); border-radius: var(--radius-lg); }
+.input-sm { padding: 0.375rem 0.75rem; font-size: var(--text-body-sm); border-radius: var(--radius-sm); }
+
+textarea.input { min-height: 120px; resize: vertical; }
+
+select.input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236a6a73' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.5rem;
+}
+
+/* Checkbox */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+.checkbox-group input[type="checkbox"] {
+  appearance: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1.5px solid var(--color-cool-grey);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out-quart);
+  position: relative;
+  flex-shrink: 0;
+}
+.checkbox-group input[type="checkbox"]:checked {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.checkbox-group input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 4.5px;
+  top: 1.5px;
+  width: 5px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.checkbox-group input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 3px rgba(51, 53, 94, 0.08);
+}
+
+/* Toggle */
+.toggle {
+  position: relative;
+  width: 2.75rem;
+  height: 1.5rem;
+  background: var(--color-mist);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background var(--duration-normal) var(--ease-out-quart);
+  flex-shrink: 0;
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 1.125rem;
+  height: 1.125rem;
+  background: var(--color-pure-white);
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-normal) var(--ease-out-expo);
+}
+.toggle.active {
+  background: var(--color-primary);
+}
+.toggle.active::after {
+  transform: translateX(1.25rem);
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card {
+  background: var(--color-pure-white);
+  border: 1px solid var(--color-mist);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  transition: box-shadow var(--duration-slow) var(--ease-out-quart),
+              transform var(--duration-slow) var(--ease-out-quart),
+              border-color var(--duration-slow) var(--ease-out-quart);
+}
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  border-color: transparent;
+}
+
+.card-compact { padding: var(--space-5); border-radius: var(--radius-lg); }
+
+.card-accent {
+  border-left: 3px solid var(--color-primary);
+}
+
+.card-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+  flex-shrink: 0;
+}
+.card-icon.primary { background: var(--color-primary-ghost); color: var(--color-primary); }
+.card-icon.secondary { background: var(--color-secondary-ghost); color: var(--color-secondary); }
+.card-icon.success { background: var(--color-success-bg); color: var(--color-success); }
+
+.card h3 { margin-bottom: var(--space-2); }
+.card p { color: var(--color-stone); line-height: 1.6; }
+
+/* ============================================================
+   BADGES & TAGS
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: var(--text-caption);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  line-height: 1.4;
+}
+.badge-primary { background: var(--color-primary-ghost); color: var(--color-primary); }
+.badge-secondary { background: var(--color-secondary-ghost); color: var(--color-secondary); }
+.badge-success { background: var(--color-success-bg); color: var(--color-success); }
+.badge-failure { background: var(--color-failure-bg); color: var(--color-failure); }
+.badge-warning { background: var(--color-warning-bg); color: var(--color-warning); }
+.badge-neutral { background: rgba(106,106,115,0.08); color: var(--color-stone); }
+
+.badge-dot::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) 0;
+  margin-bottom: var(--space-6);
+}
+.nav-brand {
+  font-family: 'Bebas Neue', var(--font-body);
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.nav-brand svg { width: 28px; height: 28px; }
+.nav-links {
+  display: flex;
+  gap: var(--space-1);
+  list-style: none;
+}
+.nav-link {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  color: var(--color-stone);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: color var(--duration-fast) var(--ease-out-quart),
+              background var(--duration-fast) var(--ease-out-quart);
+}
+.nav-link:hover {
+  color: var(--color-charcoal);
+  background: var(--color-primary-ghost);
+}
+.nav-link.active {
+  color: var(--color-primary);
+  background: var(--color-primary-ghost);
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--color-mist);
+  margin-bottom: var(--space-6);
+}
+.tab {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  color: var(--color-stone);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color var(--duration-fast) var(--ease-out-quart),
+              border-color var(--duration-normal) var(--ease-out-quart);
+}
+.tab:hover { color: var(--color-charcoal); }
+.tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+/* ============================================================
+   ALERTS
+   ============================================================ */
+.alert {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-body-sm);
+  line-height: 1.5;
+}
+.alert svg { flex-shrink: 0; margin-top: 1px; }
+.alert-success { background: var(--color-success-bg); color: #2d6b4a; }
+.alert-failure { background: var(--color-failure-bg); color: #8a2f2f; }
+.alert-warning { background: var(--color-warning-bg); color: #8a6420; }
+.alert-info { background: var(--color-primary-ghost); color: var(--color-primary); }
+
+/* ============================================================
+   AVATAR
+   ============================================================ */
+.avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-pure-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: var(--text-body-sm);
+  flex-shrink: 0;
+}
+.avatar-sm { width: 2rem; height: 2rem; font-size: var(--text-caption); }
+.avatar-lg { width: 3.5rem; height: 3.5rem; font-size: var(--text-body-lg); }
+
+/* ============================================================
+   DIVIDER
+   ============================================================ */
+.divider {
+  height: 1px;
+  background: var(--color-mist);
+  border: none;
+  margin: var(--space-6) 0;
+}
+
+/* ============================================================
+   TOOLTIP WRAPPER
+   ============================================================ */
+.tooltip-wrap {
+  position: relative;
+  display: inline-block;
+}
+.tooltip-wrap .tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--color-charcoal);
+  color: var(--color-pure-white);
+  font-size: var(--text-caption);
+  padding: 0.375rem 0.625rem;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out-quart),
+              transform var(--duration-fast) var(--ease-out-quart);
+}
+.tooltip-wrap:hover .tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================================
+   PROGRESS
+   ============================================================ */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--color-mist);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  transition: width 1s var(--ease-out-expo);
+}
+
+/* ============================================================
+   COLOR SWATCH GRID
+   ============================================================ */
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-4);
+}
+.swatch {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-mist);
+  transition: transform var(--duration-normal) var(--ease-out-quart),
+              box-shadow var(--duration-normal) var(--ease-out-quart);
+}
+.swatch:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.swatch-color {
+  height: 80px;
+  width: 100%;
+}
+.swatch-info {
+  padding: var(--space-3);
+  background: var(--color-pure-white);
+}
+.swatch-name {
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.swatch-hex {
+  font-size: var(--text-caption);
+  color: var(--color-cool-grey);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   SPACING VISUALIZER
+   ============================================================ */
+.spacing-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+.spacing-block {
+  height: 28px;
+  background: var(--color-primary-ghost);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: width 0.8s var(--ease-out-expo);
+}
+.spacing-label {
+  min-width: 72px;
+  font-size: var(--text-caption);
+  color: var(--color-stone);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   GRID UTILITIES
+   ============================================================ */
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: var(--space-6); }
+.grid-3 { display: grid; grid-template-columns: 1fr; gap: var(--space-6); }
+.grid-4 { display: grid; grid-template-columns: 1fr; gap: var(--space-5); }
+@media (min-width: 640px) {
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 960px) {
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+.flex-col { display: flex; flex-direction: column; }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+
+/* ============================================================
+   SHOWCASE AREA (light grey background)
+   ============================================================ */
+.showcase {
+  background: var(--color-off-white);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  border: 1px solid var(--color-mist);
+}
+.showcase-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+.showcase-label {
+  font-size: var(--text-caption);
+  color: var(--color-cool-grey);
+  font-weight: 500;
+  min-width: 80px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ============================================================
+   LOADING SKELETON
+   ============================================================ */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-mist) 25%, var(--color-off-white) 50%, var(--color-mist) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease infinite;
+  border-radius: var(--radius-md);
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-mist);
+  border-radius: var(--radius-lg);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+}
+table th {
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  font-weight: 600;
+  font-size: var(--text-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-stone);
+  background: var(--color-off-white);
+  border-bottom: 1px solid var(--color-mist);
+}
+table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-mist);
+  color: var(--color-charcoal);
+}
+table tr:last-child td { border-bottom: none; }
+table tr:hover td { background: rgba(51,53,94,0.02); }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav reveal">
+    <a class="nav-brand" href="#">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="24" height="24" rx="4" stroke="currentColor" stroke-width="2"/>
+        <path d="M8 20L14 8L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="10.5" y1="16" x2="17.5" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      ARKNINE
+    </a>
+    <ul class="nav-links">
+      <li><a class="nav-link active" href="#">Design System</a></li>
+      <li><a class="nav-link" href="#">Components</a></li>
+      <li><a class="nav-link" href="#">Patterns</a></li>
+      <li><a class="nav-link" href="#">Resources</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <div class="hero section">
+    <div class="hero-eyebrow reveal">
+      <span class="dot"></span>
+      Design System v1.0
+    </div>
+    <h1 class="reveal reveal-delay-1">Arknine <em>Design System</em></h1>
+    <p class="hero-description reveal reveal-delay-2">
+      A comprehensive design language for Arknine Technologies. Built on clarity, precision, and the confidence of deep blue — every token, component, and pattern designed to scale.
+    </p>
+  </div>
+
+  <!-- ===== COLORS ===== -->
+  <section class="section">
+    <div class="section-header reveal">
+      <span class="eyebrow">Foundation</span>
+      <h2>Colour Palette</h2>
+      <p>The Arknine palette anchors on deep blue authority, complemented by warm amber and a refined grey scale.</p>
+    </div>
+
+    <h3 class="body-lg mb-4 reveal">Brand</h3>
+    <div class="swatch-grid mb-8">
+      <div class="swatch reveal reveal-delay-1">
+        <div class="swatch-color" style="background:#33355e"></div>
+        <div class="swatch-info"><div class="swatch-name">Arknine Blue</div><div class="swatch-hex">#33355E · Primary</div></div>
+      </div>
+      <div class="swatch reveal reveal-delay-2">
+        <div class="swatch-color" style="background:#4b4f85"></div>
+        <div class="swatch-info"><div class="swatch-name">Blue Hover</div><div class="swatch-hex">#4B4F85</div></div>
+      </div>
+      <div class="swatch reveal reveal-delay-3">
+        <div class="swatch-color" style="background:#6469a8"></div>
+        <div class="swatch-info"><div class="swatch-name">Blue Light</div><div class="swatch-hex">#6469A8</div></div>
+      </div>
+      <div class="swatch reveal reveal-delay-4">
+        <div class="swatch-color" style="background:#df8b30"></div>
+        <div class="swatch-info"><div class="swatch-name">Amber</div><div class="swatch-hex">#DF8B30 · Secondary</div></div>
+      </div>
+    </div>
+
+    <h3 class="body-lg mb-4 reveal">Greyscale</h3>
+    <div class="swatch-grid mb-8">
+      <div class="swatch reveal reveal-delay-1">
+        <div class="swatch-color" style="background:#16161a"></div>
+        <div class="swatch-info"><div class="swatch-name">Charcoal</div><div class="swatch-hex">#16161A · Text</div></div>
+      </div>
+      <div class="swatch reveal reveal-delay-2">
+        <div class="swatch-color" style="background:#6a6a73"></div>
+        <div class="swatch-info"><div class="swatch-name">Stone Grey</div><div class="swatch-hex">#6A6A73 · Secondary</div></div>
+      </div>
+      <div class="swatch reveal reveal-delay-3">
+        <div class="swatch-color" style="background:#9a9da8"></div>
+        <div class="swatch-info"><div class="swatch-name">Cool Grey</div><div class="swatch-hex">#9A9DA8 · Placeholder</div></div>
+      </div>
+      <div class="swatch reveal reveal-delay-4">
+        <div class="swatch-color" style="background:#e8e9ed"></div>
+        <div class="swatch-info"><div class="swatch-name">Soft Mist</div><div class="swatch-hex">#E8E9ED · Border</div></div>
+      </div>
+      <div class="swatch reveal reveal-delay-5">
+        <div class="swatch-color" style="background:#f5f6f7; border-bottom:1px solid #e8e9ed"></div>
+        <div class="swatch-info"><div class="swatch-name">Off White</div><div class="swatch-hex">#F5F6F7 · Surface</div></div>
+      </div>
+    </div>
+
+    <h3 class="body-lg mb-4 reveal">Semantic</h3>
+    <div class="swatch-grid">
+      <div class="swatch reveal reveal-delay-1">
+        <div class="swatch-color" style="background:#4c9a72"></div>
+        <div class="swatch-info"><div class="swatch-name">Success</div><div class="swatch-hex">#4C9A72</div></div>
+      </div>
+      <div class="swatch reveal reveal-delay-2">
+        <div class="swatch-color" style="background:#ac4343"></div>
+        <div class="swatch-info"><div class="swatch-name">Failure</div><div class="swatch-hex">#AC4343</div></div>
+      </div>
+      <div class="swatch reveal reveal-delay-3">
+        <div class="swatch-color" style="background:#c68e36"></div>
+        <div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#C68E36</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TYPOGRAPHY ===== -->
+  <section class="section">
+    <div class="section-header reveal">
+      <span class="eyebrow">Foundation</span>
+      <h2>Typography</h2>
+      <p>Prata brings editorial elegance to headings. Avenir Next provides clarity and readability for body content.</p>
+    </div>
+
+    <div class="showcase mb-8 reveal">
+      <div class="flex-col gap-6">
+        <div>
+          <div class="caption mb-2">HEADING 1 · Prata Regular · 40px</div>
+          <h1>The measure of intelligence</h1>
+        </div>
+        <div>
+          <div class="caption mb-2">HEADING 2 · Prata Regular · 32px</div>
+          <h2>Building technology that matters</h2>
+        </div>
+        <div>
+          <div class="caption mb-2">HEADING 3 · Prata Regular · 24px</div>
+          <h3>Precision in every interaction</h3>
+        </div>
+        <hr class="divider">
+        <div>
+          <div class="caption mb-2">BODY LARGE · Avenir Next · 18px</div>
+          <p class="body-lg">We build enterprise technology with the care and attention of a craft workshop. Every detail considered, every edge case handled.</p>
+        </div>
+        <div>
+          <div class="caption mb-2">BODY · Avenir Next · 16px</div>
+          <p>Arknine Technologies delivers solutions that scale with ambition. Our approach combines deep technical expertise with an unwavering commitment to design quality.</p>
+        </div>
+        <div>
+          <div class="caption mb-2">BODY SMALL · Avenir Next · 14px</div>
+          <p class="body-sm text-stone">Secondary text, metadata, and supporting information lives at this level in the hierarchy.</p>
+        </div>
+        <div>
+          <div class="caption mb-2">CAPTION · Avenir Next · 12px</div>
+          <p class="caption">Caption text for timestamps, labels, and fine print.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BUTTONS ===== -->
+  <section class="section">
+    <div class="section-header reveal">
+      <span class="eyebrow">Components</span>
+      <h2>Buttons</h2>
+      <p>Every button has a clear purpose. Primary drives action, secondary supports, outline signals alternatives.</p>
+    </div>
+
+    <div class="showcase mb-6 reveal">
+      <div class="flex-col gap-6">
+        <div>
+          <div class="showcase-label mb-2">Primary</div>
+          <div class="btn-row">
+            <button class="btn btn-primary btn-lg">Get Started <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+            <button class="btn btn-primary btn-md">Continue</button>
+            <button class="btn btn-primary btn-sm">Save</button>
+            <button class="btn btn-primary btn-md" disabled>Disabled</button>
+          </div>
+        </div>
+        <div>
+          <div class="showcase-label mb-2">Secondary</div>
+          <div class="btn-row">
+            <button class="btn btn-secondary btn-lg">Explore</button>
+            <button class="btn btn-secondary btn-md">Upload</button>
+            <button class="btn btn-secondary btn-sm">New</button>
+            <button class="btn btn-secondary btn-md" disabled>Disabled</button>
+          </div>
+        </div>
+        <div>
+          <div class="showcase-label mb-2">Outline</div>
+          <div class="btn-row">
+            <button class="btn btn-outline btn-lg">Learn More</button>
+            <button class="btn btn-outline btn-md">View Details</button>
+            <button class="btn btn-outline btn-sm">Edit</button>
+            <button class="btn btn-outline btn-md" disabled>Disabled</button>
+          </div>
+        </div>
+        <div>
+          <div class="showcase-label mb-2">Ghost</div>
+          <div class="btn-row">
+            <button class="btn btn-ghost btn-lg">Cancel</button>
+            <button class="btn btn-ghost btn-md">Reset</button>
+            <button class="btn btn-ghost btn-sm">Skip</button>
+          </div>
+        </div>
+        <div>
+          <div class="showcase-label mb-2">Destructive</div>
+          <div class="btn-row">
+            <button class="btn btn-destructive btn-lg">Delete Account</button>
+            <button class="btn btn-destructive btn-md">Remove</button>
+            <button class="btn btn-destructive btn-sm">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FORMS ===== -->
+  <section class="section">
+    <div class="section-header reveal">
+      <span class="eyebrow">Components</span>
+      <h2>Form Elements</h2>
+      <p>Inputs designed for clarity — generous padding, subtle focus states, and helpful validation cues.</p>
+    </div>
+
+    <div class="grid-2 reveal">
+      <div class="showcase">
+        <div class="flex-col gap-6">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input class="input" type="text" placeholder="Enter your name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input class="input" type="email" placeholder="you@arknine.com">
+            <span class="form-hint">We'll never share your email.</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <select class="input">
+              <option>Select department</option>
+              <option>Engineering</option>
+              <option>Design</option>
+              <option>Product</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea class="input" placeholder="Tell us about your project..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-col gap-6">
+        <div class="showcase">
+          <div class="showcase-label mb-4">Validation States</div>
+          <div class="flex-col gap-4">
+            <div class="form-group">
+              <label class="form-label">Success</label>
+              <input class="input input-success" value="hello@arknine.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Error</label>
+              <input class="input input-error" value="invalid-email">
+              <span class="form-hint" style="color:var(--color-failure)">Please enter a valid email address.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase">
+          <div class="showcase-label mb-4">Controls</div>
+          <div class="flex-col gap-4">
+            <label class="checkbox-group">
+              <input type="checkbox" checked>
+              <span class="body-sm">Accept terms and conditions</span>
+            </label>
+            <label class="checkbox-group">
+              <input type="checkbox">
+              <span class="body-sm">Subscribe to newsletter</span>
+            </label>
+            <hr class="divider">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span class="body-sm">Dark mode</span>
+              <div class="toggle" onclick="this.classList.toggle('active')"></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span class="body-sm">Notifications</span>
+              <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CARDS ===== -->
+  <section class="section">
+    <div class="section-header reveal">
+      <span class="eyebrow">Components</span>
+      <h2>Cards</h2>
+      <p>Containers for content that lift on interaction, guiding attention naturally.</p>
+    </div>
+
+    <div class="grid-3 mb-8">
+      <div class="card reveal reveal-delay-1">
+        <div class="card-icon primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+        </div>
+        <h3>Enterprise Platform</h3>
+        <p>Scalable infrastructure built for teams that demand reliability and performance at every level.</p>
+      </div>
+      <div class="card reveal reveal-delay-2">
+        <div class="card-icon secondary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>Real-Time Analytics</h3>
+        <p>Monitor, measure, and optimise with data that updates the moment events happen.</p>
+      </div>
+      <div class="card reveal reveal-delay-3">
+        <div class="card-icon success">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Security First</h3>
+        <p>End-to-end encryption, SOC 2 compliance, and continuous monitoring protect your data.</p>
+      </div>
+    </div>
+
+    <div class="card card-accent reveal" style="max-width:480px">
+      <div style="display:flex;align-items:center;gap:var(--space-4);margin-bottom:var(--space-4)">
+        <div class="avatar">DK</div>
+        <div>
+          <div style="font-weight:600">Dhrati K.</div>
+          <div class="caption">Engineering Lead · Arknine</div>
+        </div>
+      </div>
+      <p class="body-sm text-stone">"The design system has brought remarkable consistency across our entire product surface. What used to take days now takes minutes."</p>
+    </div>
+  </section>
+
+  <!-- ===== BADGES & ALERTS ===== -->
+  <section class="section">
+    <div class="section-header reveal">
+      <span class="eyebrow">Components</span>
+      <h2>Badges & Alerts</h2>
+      <p>Status indicators and messaging patterns that communicate clearly without overwhelming.</p>
+    </div>
+
+    <div class="showcase mb-6 reveal">
+      <div class="showcase-label mb-4">Badges</div>
+      <div class="btn-row">
+        <span class="badge badge-primary badge-dot">Active</span>
+        <span class="badge badge-secondary badge-dot">Pending</span>
+        <span class="badge badge-success badge-dot">Deployed</span>
+        <span class="badge badge-failure badge-dot">Failed</span>
+        <span class="badge badge-warning badge-dot">Review</span>
+        <span class="badge badge-neutral">Draft</span>
+      </div>
+    </div>
+
+    <div class="flex-col gap-4 reveal">
+      <div class="alert alert-success">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
+        <div><strong>Deployment successful.</strong> Your changes are live on production.</div>
+      </div>
+      <div class="alert alert-failure">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        <div><strong>Build failed.</strong> Check the pipeline logs for error details.</div>
+      </div>
+      <div class="alert alert-warning">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div><strong>API rate limit approaching.</strong> You've used 85% of your monthly quota.</div>
+      </div>
+      <div class="alert alert-info">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div><strong>New version available.</strong> Update to v2.4 for improved performance.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TABLE ===== -->
+  <section class="section">
+    <div class="section-header reveal">
+      <span class="eyebrow">Components</span>
+      <h2>Data Table</h2>
+      <p>Clean, scannable tables with subtle row hover and consistent alignment.</p>
+    </div>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Last Active</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600">Sarah Mitchell</td>
+            <td>Design Lead</td>
+            <td><span class="badge badge-success badge-dot">Active</span></td>
+            <td class="text-stone">2 mins ago</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600">James Chen</td>
+            <td>Backend Engineer</td>
+            <td><span class="badge badge-success badge-dot">Active</span></td>
+            <td class="text-stone">12 mins ago</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600">Priya Patel</td>
+            <td>Product Manager</td>
+            <td><span class="badge badge-warning badge-dot">Away</span></td>
+            <td class="text-stone">1 hour ago</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600">Tom Garcia</td>
+            <td>DevOps</td>
+            <td><span class="badge badge-neutral">Offline</span></td>
+            <td class="text-stone">Yesterday</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== LOADING STATES ===== -->
+  <section class="section">
+    <div class="section-header reveal">
+      <span class="eyebrow">Patterns</span>
+      <h2>Loading & Progress</h2>
+      <p>Skeleton screens and progress indicators that keep users informed during async operations.</p>
+    </div>
+
+    <div class="grid-2 reveal">
+      <div class="showcase">
+        <div class="showcase-label mb-4">Skeleton Loading</div>
+        <div class="flex-col gap-4">
+          <div style="display:flex;gap:var(--space-3);align-items:center">
+            <div class="skeleton" style="width:40px;height:40px;border-radius:50%;flex-shrink:0"></div>
+            <div class="flex-col gap-2" style="flex:1">
+              <div class="skeleton" style="height:14px;width:60%"></div>
+              <div class="skeleton" style="height:10px;width:40%"></div>
+            </div>
+          </div>
+          <div class="skeleton" style="height:120px;width:100%;border-radius:var(--radius-lg)"></div>
+          <div class="flex-col gap-2">
+            <div class="skeleton" style="height:12px;width:100%"></div>
+            <div class="skeleton" style="height:12px;width:85%"></div>
+            <div class="skeleton" style="height:12px;width:65%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase">
+        <div class="showcase-label mb-4">Progress Bars</div>
+        <div class="flex-col gap-6">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-2)">
+              <span class="body-sm">Upload progress</span>
+              <span class="body-sm" style="font-weight:600;color:var(--color-primary)">72%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-2)">
+              <span class="body-sm">Storage used</span>
+              <span class="body-sm" style="font-weight:600;color:var(--color-warning)">89%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:89%;background:var(--color-warning)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-2)">
+              <span class="body-sm">Tasks complete</span>
+              <span class="body-sm" style="font-weight:600;color:var(--color-success)">100%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--color-success)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPACING ===== -->
+  <section class="section">
+    <div class="section-header reveal">
+      <span class="eyebrow">Foundation</span>
+      <h2>Spacing Scale</h2>
+      <p>A 4px base unit creates consistent spatial rhythm across every component and layout.</p>
+    </div>
+
+    <div class="showcase reveal">
+      <div class="spacing-row"><span class="spacing-label">4px · sp-1</span><div class="spacing-block" style="width:4px"></div></div>
+      <div class="spacing-row"><span class="spacing-label">8px · sp-2</span><div class="spacing-block" style="width:8px"></div></div>
+      <div class="spacing-row"><span class="spacing-label">12px · sp-3</span><div class="spacing-block" style="width:12px"></div></div>
+      <div class="spacing-row"><span class="spacing-label">16px · sp-4</span><div class="spacing-block" style="width:16px"></div></div>
+      <div class="spacing-row"><span class="spacing-label">24px · sp-6</span><div class="spacing-block" style="width:24px"></div></div>
+      <div class="spacing-row"><span class="spacing-label">32px · sp-8</span><div class="spacing-block" style="width:32px"></div></div>
+      <div class="spacing-row"><span class="spacing-label">48px · sp-12</span><div class="spacing-block" style="width:48px"></div></div>
+      <div class="spacing-row"><span class="spacing-label">64px · sp-16</span><div class="spacing-block" style="width:64px"></div></div>
+      <div class="spacing-row"><span class="spacing-label">80px · sp-20</span><div class="spacing-block" style="width:80px"></div></div>
+      <div class="spacing-row"><span class="spacing-label">96px · sp-24</span><div class="spacing-block" style="width:96px"></div></div>
+    </div>
+  </section>
+
+  <!-- ===== DESIGN TOKENS TABLE ===== -->
+  <section class="section">
+    <div class="section-header reveal">
+      <span class="eyebrow">Reference</span>
+      <h2>Design Tokens</h2>
+      <p>Every value in the system is available as a CSS custom property for consistent implementation.</p>
+    </div>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+        <tbody>
+          <tr><td style="font-family:monospace;font-size:13px;color:var(--color-primary)">--color-primary</td><td>#33355E</td><td>Primary actions, links, active states</td></tr>
+          <tr><td style="font-family:monospace;font-size:13px;color:var(--color-primary)">--color-secondary</td><td>#DF8B30</td><td>Secondary actions, accents, highlights</td></tr>
+          <tr><td style="font-family:monospace;font-size:13px;color:var(--color-primary)">--color-charcoal</td><td>#16161A</td><td>Primary text, headings</td></tr>
+          <tr><td style="font-family:monospace;font-size:13px;color:var(--color-primary)">--color-stone</td><td>#6A6A73</td><td>Secondary text, captions</td></tr>
+          <tr><td style="font-family:monospace;font-size:13px;color:var(--color-primary)">--font-heading</td><td>Prata, serif</td><td>H1–H3, display text</td></tr>
+          <tr><td style="font-family:monospace;font-size:13px;color:var(--color-primary)">--font-body</td><td>Avenir Next</td><td>Body, UI, captions</td></tr>
+          <tr><td style="font-family:monospace;font-size:13px;color:var(--color-primary)">--radius-md</td><td>0.5rem</td><td>Buttons, inputs, small cards</td></tr>
+          <tr><td style="font-family:monospace;font-size:13px;color:var(--color-primary)">--radius-xl</td><td>1rem</td><td>Cards, modals, panels</td></tr>
+          <tr><td style="font-family:monospace;font-size:13px;color:var(--color-primary)">--ease-out-expo</td><td>cubic-bezier(0.16,1,0.3,1)</td><td>Entrance animations, reveals</td></tr>
+          <tr><td style="font-family:monospace;font-size:13px;color:var(--color-primary)">--shadow-lg</td><td>0 8px 32px rgba(…,0.10)</td><td>Elevated cards, hover states</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="padding:var(--space-12) 0 var(--space-8);text-align:center">
+    <p class="caption">Arknine Technologies Design System · v1.0 · April 2026</p>
+  </footer>
+
+</div>
+
+<!-- ===== SCROLL REVEAL SCRIPT ===== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reveals = document.querySelectorAll('.reveal');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Animate spacing bars on reveal
+  const spacingBlocks = document.querySelectorAll('.spacing-block');
+  const spacingObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const target = entry.target;
+        const finalWidth = target.style.width;
+        target.style.width = '0px';
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            target.style.transition = 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+            target.style.width = finalWidth;
+          });
+        });
+        spacingObserver.unobserve(target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  spacingBlocks.forEach(el => spacingObserver.observe(el));
+
+  // Animate progress bars on reveal
+  const progressFills = document.querySelectorAll('.progress-fill');
+  const progressObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const target = entry.target;
+        const finalWidth = target.style.width;
+        target.style.width = '0%';
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            target.style.width = finalWidth;
+          });
+        });
+        progressObserver.unobserve(target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  progressFills.forEach(el => progressObserver.observe(el));
+});
+</script>
+
+</body>
+</html>

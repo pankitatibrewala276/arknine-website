@@ -1,0 +1,52 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp:*)",
+      "Bash(npm install:*)",
+      "Bash(npx next:*)",
+      "Bash(npm run:*)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(netstat -ano)",
+      "Bash(findstr 3000)",
+      "Bash(taskkill:*)",
+      "WebFetch(domain:docs.google.com)",
+      "WebFetch(domain:doc-0o-4s-docstext.googleusercontent.com)",
+      "Bash(findstr \":3000\")",
+      "Bash(findstr LISTENING)",
+      "WebFetch(domain:investors.wix.com)",
+      "Bash(curl -L -o \"C:/Users/hites/OneDrive/Desktop/arknine website/arknine-website/public/video/hero-placeholder.mp4\" \"https://cdn.pixabay.com/video/2020/05/25/40069-424551531_large.mp4\")",
+      "Bash(curl -L -o \"C:/Users/hites/OneDrive/Desktop/arknine website/arknine-website/public/video/hero-placeholder.mp4\" \"https://www.w3schools.com/html/mov_bbb.mp4\")",
+      "Bash(curl -L -o \"C:/Users/hites/OneDrive/Desktop/arknine website/arknine-website/public/video/hero-placeholder.mp4\" \"https://cdn.pixabay.com/video/2024/02/23/201654-916023567_large.mp4\")",
+      "Bash(curl -L -o \"C:/Users/hites/OneDrive/Desktop/arknine website/arknine-website/public/video/hero-placeholder.mp4\" \"https://videos.pexels.com/video-files/3209236/3209236-hd_1920_1080_25fps.mp4\")",
+      "Bash(curl -L -o \"C:/Users/hites/OneDrive/Desktop/arknine website/arknine-website/public/video/hero-placeholder.mp4\" \"https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4\")",
+      "Bash(python3 .claude/skills/ui-ux-pro-max/scripts/search.py \"corporate institutional investor relations premium modern clean\" --design-system -p \"Arknine Technologies\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/contact)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/about/team/heet-jain)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(ls \"/c/Users/hites/OneDrive/Desktop/arknine website/arknine-website/.env\"*)",
+      "Bash(find:*)",
+      "Bash(xargs ls:*)",
+      "Bash(npx tsc:*)",
+      "Bash(curl -s \"http://localhost:1337/api/people-profiles?populate=picture&pagination[pageSize]=1\")",
+      "Bash(curl.exe:*)",
+      "Bash(powershell -Command \"Invoke-RestMethod -Uri 'http://localhost:1337/api/people-profiles?populate=picture&pagination[pageSize]=1' | ConvertTo-Json -Depth 10\")",
+      "Bash(powershell -Command \"Invoke-RestMethod -Uri 'http://localhost:1337/api/people-profiles?populate=picture&pagination[pageSize]=100' | ConvertTo-Json -Depth 10\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173)",
+      "Bash(curl -s http://localhost:5173/)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(curl:*)",
+      "Bash(kill %1)",
+      "Bash(wait)",
+      "Bash(cmd //c \"taskkill /IM node.exe /F\")",
+      "Bash(node -e ':*)",
+      "Bash(node -e \"const f=require\\('fs'\\).readFileSync\\('src/app/globals.css','utf8'\\);let d=0;f.split\\('\\\\n'\\).forEach\\(\\(l,i\\)=>{for\\(const c of l\\){if\\(c==='{'\\)d++;if\\(c==='}'\\)d--;if\\(d<0\\){console.log\\('} line '+\\(i+1\\)\\);d=0;}}}\\);console.log\\(d===0?'OK':'depth='+d\\);\")",
+      "WebFetch(domain:www.eternal.com)",
+      "WebFetch(domain:eternal.com)",
+      "Bash(command -v gh)"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "code-review-graph"
+  ]
+}
